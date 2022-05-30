@@ -17,5 +17,11 @@ from django.conf.urls import url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^$', admin.site.urls),
+    url(r'^login/', admin.site.urls),
+    url(r'^signup/', admin.site.urls),
+    url(r'^question/id123/', admin.site.urls),
+    url(r'^ask/', admin.site.urls),
+    url(r'^popular/', admin.site.urls),
+    url(r'^new/', admin.site.urls)
 ]
