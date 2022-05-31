@@ -1,6 +1,6 @@
-from django.conf.urls import url                                                
+from django.conf.urls import url, include
 from qa.views import test                                                       
                                                                                 
-urlpatterns = patterns('',                                                      
-    url(r'^', test),                                                            
-)
+urlpatterns = [                                       
+    url(r'^', test)
+]
