@@ -48,16 +48,11 @@ def popular(request):
     })
 
 
-def question(request, pk):
-    try:
-        answers = Answer.objects.filter(question=id)
-    except Answer.DoesNotExist:
-        raise Http404
-
+def question(request, pk):        
     question = get_object_or_404(Question, id=pk)
 
     return render(request, 'question.html', {
-        'answers': answers,
+        'answers': question.answer_set.all(),
         'question': question,
     })
 
