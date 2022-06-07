@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from qa.models import Question, QuestionManage, Answer
+from qa.models import Question, QuestionManager, Answer
 
 
 def test(request, *args, **kwargs):                          
@@ -36,7 +36,7 @@ def main_page(request):
     questions = Question.objects.new()
     paginator, page = paginate(request, questions)
     paginator.baseurl = '/?page='
-    return render(request, 'templates/question_list.html', {
+    return render(request, 'question_list.html', {
         'posts': page.object_list,
         'paginator': paginator, 'page': page,
     })
@@ -46,11 +46,22 @@ def popular(request):
     questions = Question.objects.popular()                                                  
     paginator, page = paginate(request, questions)                                                       
     paginator.baseurl = '/popular/?page='     
-    return render(request, 'templates/question_list.html', {       
+    return render(request, 'question_list.html', {       
         'posts': page.object_list,             
-        'paginator': paginator, 'page': page,                                                                      
+        'paginator': paginator, 'page': page,
     })
 
 
 def question(request, id):
-    
+    try:
+        answers = Answer.objects.filter(question=id)
+    except Answer.DoesNotExist:
+        raise Http404
+
+    question = get_object_or_404(Question, id=id)
+
+    return render(request, 'question.html', {
+        'answers': answers,
+        'question': question,
+    })
+
