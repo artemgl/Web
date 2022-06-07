@@ -5,16 +5,12 @@
     <title>Ask</title>
 </head>
 <body>
-<nav><ul class="pagination">                                      
-  {% for p in paginator.page_range %}                             
-  {% if p.number == page.number %}                              
-  <li class="active">                                             
-  {% else %}                                                      
-  <li>                                                            
-  {% endif %}                                                     
-    <a href="{{ paginator.baseurl }}{{ p.number }}">              
-    {{ p.number }}</a>                                            
-  </li>                                                           
+<ul>                                      
+  {% for q in questions %}                             
+    <li>
+    <a href="{{ q.get_url }}">              
+    {{ q.title }}</a>                                            
+    </li>                                                           
   {% endfor %}                                                    
-</ul></nav>
+</ul>
 </body> </html>

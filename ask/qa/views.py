@@ -29,36 +29,32 @@ def paginate(request, qs):
     except EmptyPage:
         page = paginator.page(paginator.num_pages)
 
-    return paginator, page
+    return page
 
 
 def main_page(request):
     questions = Question.objects.new()
-    paginator, page = paginate(request, questions)
-    paginator.baseurl = '/?page='
+    page = paginate(request, questions)
     return render(request, 'question_list.html', {
-        'posts': page.object_list,
-        'paginator': paginator, 'page': page,
+        'questions': page.object_list,
     })
 
 
 def popular(request):
     questions = Question.objects.popular()                                                  
-    paginator, page = paginate(request, questions)                                                       
-    paginator.baseurl = '/popular/?page='     
+    page = paginate(request, questions)                                                       
     return render(request, 'question_list.html', {       
-        'posts': page.object_list,             
-        'paginator': paginator, 'page': page,
+        'questions': page.object_list,             
     })
 
 
-def question(request, id):
+def question(request, pk):
     try:
         answers = Answer.objects.filter(question=id)
     except Answer.DoesNotExist:
         raise Http404
 
-    question = get_object_or_404(Question, id=id)
+    question = get_object_or_404(Question, id=pk)
 
     return render(request, 'question.html', {
         'answers': answers,

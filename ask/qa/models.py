@@ -19,6 +19,8 @@ class Question(models.Model):
     author = models.ForeignKey(User, related_name="question_author", on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, related_name='question_like_user')
 
+    def get_url(self):
+        return 'question/' + str(self.pk)
 
 class Answer(models.Model):
     text = models.TextField()
