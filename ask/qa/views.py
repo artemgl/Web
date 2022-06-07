@@ -48,11 +48,34 @@ def popular(request):
     })
 
 
-def question(request, pk):        
-    question = get_object_or_404(Question, id=pk)
 
-    return render(request, 'question.html', {
-        'answers': question.answer_set.all(),
-        'question': question,
+def ask(request):
+    if request.method == "POST":
+        form = AskForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            url = question.get_url()
+        return HttpResponseRedirect(url)
+    else: # Consider it is GET method
+        form = AskForm()
+    return render(request, 'ask.html', {
+        'form': form
     })
 
+
+def question(request, pk):
+    question = get_object_or_404(Question, id=pk)
+
+    if request.method == "POST":                                                
+        form = AnswerForm(request.POST)                                        
+        if form.is_valid():                                                     
+            answer = form.save()                                              
+            url = question.get_url()                                            
+        return HttpResponseRedirect(url)                                        
+    else: # Consider it is GET method                                           
+        form = AskForm()                                                        
+    return render(request, 'question.html', {
+        'answers': question.answer_set.all(),                                                                      
+        'question': question,
+        'form': form,        
+    })
