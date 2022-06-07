@@ -4,6 +4,9 @@ class AskForm(forms.Form):
     title = forms.CharField()
     text = forms.CharField()
 
+    def clean(self):
+        return
+
     def save(self):
         question = Question(**self.cleaned_data)
         question.save()
@@ -13,6 +16,9 @@ class AskForm(forms.Form):
 class AnswerForm(forms.Form):
     text = forms.CharField()
     question = forms.IntegerField()
+
+    def clean(self):
+        return
 
     def save(self):
         answer = Answer(**self.cleaned_data)

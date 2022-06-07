@@ -59,7 +59,7 @@ def ask(request):
     else: # Consider it is GET method
         form = AskForm()
     return render(request, 'ask.html', {
-        'form': form
+        'form': form,
     })
 
 
