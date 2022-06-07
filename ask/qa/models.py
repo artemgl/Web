@@ -16,11 +16,11 @@ class Question(models.Model):
     text = models.TextField()
     rating = models.IntegerField(default=0)
     added_at = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User, related_name="question_author", on_delete=models.CASCADE)
+    author = models.ForeignKey(User, related_name="question_author", on_delete=models.CASCADE, null=True)
     likes = models.ManyToManyField(User, related_name='question_like_user')
 
     def get_url(self):
-        return 'question/' + str(self.pk)
+        return '/question/' + str(self.pk)
 
 class Answer(models.Model):
     text = models.TextField()
