@@ -11,5 +11,7 @@ mysql -uroot -e "grant all privileges on ask_db.* to 'box'@'localhost' with gran
 sudo python /home/box/web/ask/manage.py makemigrations qa
 sudo python /home/box/web/ask/manage.py migrate
 
+#sudo python /home/box/web/ask/manage.py createsuperuser
+
 sudo gunicorn --chdir /home/box/web/ask/ -b 0.0.0.0:8000 ask.wsgi:application
 #sudo gunicorn --chdir /home/box/web/ask/ -b 0.0.0.0:8000 ask.wsgi:application --daemon

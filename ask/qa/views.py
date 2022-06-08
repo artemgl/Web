@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from qa.models import Question, QuestionManager, Answer
 from qa.forms import AskForm, AnswerForm
+from django.contrib.auth.models import User
 
 
 def test(request, *args, **kwargs):                          
@@ -52,12 +53,14 @@ def popular(request):
 def ask(request):
     if request.method == "POST":
         form = AskForm(request.POST)
+        form._user = User.objects.get(id=0)
         if form.is_valid():
             question = form.save()
             url = question.get_url()
-        return HttpResponseRedirect(url)
+        return redirect(url)
     else: # Consider it is GET method
         form = AskForm()
+#        form._user = User.objects.get(id=1)
     return render(request, 'ask.html', {
         'form': form,
     })
@@ -66,16 +69,18 @@ def ask(request):
 def question(request, pk):
     question = get_object_or_404(Question, id=pk)
 
-    if request.method == "POST":                                                
-        form = AnswerForm(request.POST)                                        
-        if form.is_valid():                                                     
-            answer = form.save()                                              
-            url = question.get_url()                    
-        return HttpResponseRedirect(url)                                        
-    else: # Consider it is GET method                                           
-        form = AskForm()                                                        
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        form._user = User.objects.get(id=0)
+        if form.is_valid():
+            answer = form.save()
+            url = question.get_url()
+        return HttpResponseRedirect(url)
+    else: # Consider it is GET method
+        form = AskForm()
+#        form._user = User.objects.get(id=1)
     return render(request, 'question.html', {
-        'answers': question.answer_set.all(),                                                                      
+        'answers': question.answer_set.all(),
         'question': question,
-        'form': form,        
+        'form': form,
     })

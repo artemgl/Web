@@ -9,9 +9,10 @@ class AskForm(forms.Form):
         super(AskForm, self).__init__(*args, **kwargs)
 
     def clean(self):
-        return
+        return self.cleaned_data
 
     def save(self):
+        self.cleaned_data['author'] = self._user
         question = Question(**self.cleaned_data)
 #        question.author = 89320
         question.save()
@@ -26,9 +27,10 @@ class AnswerForm(forms.Form):
         super(AnswerForm, self).__init__(*args, **kwargs)
 
     def clean(self):
-        return
+        return self.cleaned_data
 
     def save(self):
+        self.cleaned_data['author'] = self._user
         answer = Answer(**self.cleaned_data)
         answer.save()
         return answer
