@@ -34,3 +34,13 @@ class AnswerForm(forms.Form):
         answer = Answer(**self.cleaned_data)
         answer.save()
         return answer
+
+
+class SignupForm(forms.Form):
+    username = forms.CharField()
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def save(self):
+        user = User.objects.create_user(**self.cleaned_data)
+        return user

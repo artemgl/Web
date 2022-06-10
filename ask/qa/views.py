@@ -84,3 +84,22 @@ def question(request, pk):
         'question': question,
         'form': form,
     })
+
+
+def signup(request):
+    if request.method == 'GET':
+        form = SignupForm()
+    elif request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+            views.login(request, user)
+            return redirect('')
+    return render(request, 'signup.html', {
+        'form': form
+    })
+
+
+def login(request):
+    pass
