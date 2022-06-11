@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import views, authenticate
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from qa.models import Question, QuestionManager, Answer
-from qa.forms import AskForm, AnswerForm
-from django.contrib.auth.models import User
+from qa.models import *
+from qa.forms import *
+#from django.contrib.auth.models import User
 
 
 def test(request, *args, **kwargs):                          
@@ -51,7 +52,7 @@ def popular(request):
 
 
 def ask(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated():
         form = AskForm(request.POST)
         form._user = request.user
         if form.is_valid():
@@ -69,7 +70,7 @@ def ask(request):
 def question(request, pk):
     question = get_object_or_404(Question, id=pk)
 
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated():
         form = AnswerForm(request.POST)
         form._user = request.user
         if form.is_valid():
@@ -95,7 +96,7 @@ def signup(request):
             form.save()
             user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
             views.login(request, user)
-            return redirect('')
+            return redirect('/')
     return render(request, 'signup.html', {
         'form': form
     })
