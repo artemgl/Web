@@ -53,7 +53,7 @@ def popular(request):
 def ask(request):
     if request.method == "POST":
         form = AskForm(request.POST)
-        form._user = User.objects.get(id=0)
+        form._user = request.user
         if form.is_valid():
             question = form.save()
             url = question.get_url()
@@ -71,7 +71,7 @@ def question(request, pk):
 
     if request.method == "POST":
         form = AnswerForm(request.POST)
-        form._user = User.objects.get(id=0)
+        form._user = request.user
         if form.is_valid():
             answer = form.save()
             url = question.get_url()
@@ -100,6 +100,3 @@ def signup(request):
         'form': form
     })
 
-
-def login(request):
-    pass

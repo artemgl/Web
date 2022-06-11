@@ -14,7 +14,6 @@ class AskForm(forms.Form):
     def save(self):
         self.cleaned_data['author'] = self._user
         question = Question(**self.cleaned_data)
-#        question.author = 89320
         question.save()
         return question
 
