@@ -13,8 +13,13 @@ class AskForm(forms.Form):
         return self.cleaned_data
 
     def save(self):
-        self.cleaned_data['author'] = self._user
-        question = Question(**self.cleaned_data)
+        try:
+            self.cleaned_data['author'] = self._user
+            question = Question(**self.cleaned_data)
+        except Exception as e:
+            self.cleaned_data['author'] = User.objects.create_user('username')
+            question = Question(**self.cleaned_data)
+            #print(e)
         question.save()
         return question
 

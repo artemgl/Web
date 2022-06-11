@@ -52,12 +52,16 @@ def popular(request):
 
 
 def ask(request):
-    if request.method == "POST" and request.user.is_authenticated():
+    if request.method == "POST":# and request.user.is_authenticated():
         form = AskForm(request.POST)
         form._user = request.user
         if form.is_valid():
-            question = form.save()
+            try:
+                question = form.save()
+            except Exception as e:
+                print(e)
             url = question.get_url()
+#            print("url is " + url)
         return redirect(url)
     else: # Consider it is GET method
         form = AskForm()
@@ -76,7 +80,8 @@ def question(request, pk):
         if form.is_valid():
             answer = form.save()
             url = question.get_url()
-        return HttpResponseRedirect(url)
+#        return HttpResponseRedirect(url)
+        return redirect(url)
     else: # Consider it is GET method
         form = AskForm()
 #        form._user = User.objects.get(id=1)
